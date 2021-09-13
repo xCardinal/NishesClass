@@ -3,12 +3,13 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using System.Threading.Tasks;
 
 namespace APIClientApp
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             #region Set up Request
             //Client property which is equaly to a new 'RestSharp'.
@@ -60,13 +61,13 @@ namespace APIClientApp
             request.AddJsonBody(postcodes.ToString());
             //request.AddParameter("application/json", postcodes.ToString(), ParameterType.RequestBody);
 
-            IRestResponse bulkPostcodeResponse = client.Execute(request);
+            IRestResponse bulkPostcodeResponse = await client.ExecuteAsync(request);
 
             //Console.WriteLine(bulkPostcodeResponse.Content);
 
             //Cast the enum StatusCode to an int to see the actual integer status code
-            Console.WriteLine($"Status Code: {bulkPostcodeResponse.StatusCode}");
-            Console.WriteLine($"Status Code: {(int)bulkPostcodeResponse.StatusCode}");
+            //Console.WriteLine($"Status Code: {bulkPostcodeResponse.StatusCode}");
+            //Console.WriteLine($"Status Code: {(int)bulkPostcodeResponse.StatusCode}");
 
             //var course = new JObject
             //{
@@ -75,7 +76,7 @@ namespace APIClientApp
             //    new JProperty ("total", 4)
             //    };
 
-            //Query tje results to a Json object
+            //Query the results to a Json object
 
             var bulkJsonResponse = JObject.Parse(bulkPostcodeResponse.Content);
             var singleJsonResponse = JObject.Parse(singlePostcodeResponse.Content);
@@ -101,8 +102,46 @@ namespace APIClientApp
             }
 
             var result2 = bulkPostCode.result.Where(p => p.query == "OX49 5NU").Select(p => p.postcode.parish).FirstOrDefault();
+
+            CreateOutwardCodeGetRequest("OX49 5NU");
+
+
         }
 
+        private static void CreateOutwardCodeGetRequest (string postcode)
+        {
+            var client = new RestClient(@"https://api.postcodes.io/");
+
+            client.Timeout = -1;
+
+            var request = new RestRequest(Method.GET);
+
+            request.AddHeader("Content-Type", "application/json");
+
+            var spacePos = 0;
+
+            for (int i = 0; i < postcode.Length; i++)
+            {
+                if (postcode[i] == ' ')
+                {
+                    spacePos = i;
+                } 
+            }
+
+            var outwardCode = postcode.Remove(spacePos);
+
+            request.Resource = $"outcodes/{outwardCode.ToLower()}";
+
+            var singlePostcodeResponse = client.Execute(request);
+
+            Console.WriteLine($"Status Code: {singlePostcodeResponse.StatusCode}");
+            Console.WriteLine($"Status Code: {(int)singlePostcodeResponse.StatusCode}");
+
+            var jObject = JsonConvert.DeserializeObject<OutcodeResponse>(singlePostcodeResponse.Content);
+
+            Console.WriteLine("Country: " + jObject.result.country[0]);
+            Console.WriteLine("Country: " + jObject.result.admin_district[0]);
+        }
 
 
     }
