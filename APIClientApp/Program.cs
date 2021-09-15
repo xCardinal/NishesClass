@@ -89,60 +89,60 @@ namespace APIClientApp
 
             #endregion
 
-            var singPostCode = JsonConvert.DeserializeObject<SinglePostcodeResponse>(singlePostcodeResponse.Content);
-            var bulkPostCode = JsonConvert.DeserializeObject<BulkPostcodeResponse>(bulkPostcodeResponse.Content);
+            //var singPostCode = JsonConvert.DeserializeObject<SinglePostcodeResponse>(singlePostcodeResponse.Content);
+            //var bulkPostCode = JsonConvert.DeserializeObject<BulkPostcodeResponse>(bulkPostcodeResponse.Content);
 
             //Console.WriteLine(singPostCode.result.country);
             //Console.WriteLine(singPostCode.result.codes.admin_county);
 
-            foreach (var result in bulkPostCode.result)
-            {
-                Console.WriteLine(result.query);
-                Console.WriteLine(result.postcode.region);
-            }
+            //foreach (var result in bulkPostCode.result)
+            //{
+            //    Console.WriteLine(result.query);
+            //    Console.WriteLine(result.postcode.region);
+            //}
 
-            var result2 = bulkPostCode.result.Where(p => p.query == "OX49 5NU").Select(p => p.postcode.parish).FirstOrDefault();
+            //var result2 = bulkPostCode.result.Where(p => p.query == "OX49 5NU").Select(p => p.postcode.parish).FirstOrDefault();
 
-            CreateOutwardCodeGetRequest("OX49 5NU");
+            //CreateOutwardCodeGetRequest("OX49 5NU");
 
-
-        }
-
-        private static void CreateOutwardCodeGetRequest (string postcode)
-        {
-            var client = new RestClient(@"https://api.postcodes.io/");
-
-            client.Timeout = -1;
-
-            var request = new RestRequest(Method.GET);
-
-            request.AddHeader("Content-Type", "application/json");
-
-            var spacePos = 0;
-
-            for (int i = 0; i < postcode.Length; i++)
-            {
-                if (postcode[i] == ' ')
-                {
-                    spacePos = i;
-                } 
-            }
-
-            var outwardCode = postcode.Remove(spacePos);
-
-            request.Resource = $"outcodes/{outwardCode.ToLower()}";
-
-            var singlePostcodeResponse = client.Execute(request);
-
-            Console.WriteLine($"Status Code: {singlePostcodeResponse.StatusCode}");
-            Console.WriteLine($"Status Code: {(int)singlePostcodeResponse.StatusCode}");
-
-            var jObject = JsonConvert.DeserializeObject<SingleOutcodeResponse>(singlePostcodeResponse.Content);
-
-            Console.WriteLine("Country: " + jObject.result.country[0].FirstOrDefault());
-            Console.WriteLine("Country: " + jObject.result.admin_district[0].FirstOrDefault());
 
         }
+
+        //private static void CreateOutwardCodeGetRequest (string postcode)
+        //{
+        //    var client = new RestClient(@"https://api.postcodes.io/");
+
+        //    client.Timeout = -1;
+
+        //    var request = new RestRequest(Method.GET);
+
+        //    request.AddHeader("Content-Type", "application/json");
+
+        //    var spacePos = 0;
+
+        //    for (int i = 0; i < postcode.Length; i++)
+        //    {
+        //        if (postcode[i] == ' ')
+        //        {
+        //            spacePos = i;
+        //        } 
+        //    }
+
+        //    var outwardCode = postcode.Remove(spacePos);
+
+        //    request.Resource = $"outcodes/{outwardCode.ToLower()}";
+
+        //    var singlePostcodeResponse = client.Execute(request);
+
+        //    Console.WriteLine($"Status Code: {singlePostcodeResponse.StatusCode}");
+        //    Console.WriteLine($"Status Code: {(int)singlePostcodeResponse.StatusCode}");
+
+        //    var jObject = JsonConvert.DeserializeObject<SingleOutcodeResponse>(singlePostcodeResponse.Content);
+
+        //    Console.WriteLine("Country: " + jObject.result.country[0].FirstOrDefault());
+        //    Console.WriteLine("Country: " + jObject.result.admin_district[0].FirstOrDefault());
+
+        //}
 
 
     }

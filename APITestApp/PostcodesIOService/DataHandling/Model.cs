@@ -1,15 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using APITestApp.PostcodesIOService;
+using Newtonsoft.Json;
 
 namespace APIClientApp.PostcodesIOService
 {
 
-    public class SinglePostcodeResponse
+    public class SinglePostcodeResponse : IResponse
     {
         [JsonProperty("status")]
         public int Status { get; set; }
         public Postcode result { get; set; }
     }
-    public class BulkPostcodeResponse
+    public class BulkPostcodeResponse : IResponse
     {
         [JsonProperty("status")]
         public int Status { get; set; }

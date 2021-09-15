@@ -18,24 +18,35 @@ namespace APITestApp.PostcodesIOService.Tests
         [Test]
         public void StatusIs200()
         {
-            Assert.That(_singlePostcodeService.ResponseContent["status"].ToString(), Is.EqualTo("200"));
+            //Assert.That(_singlePostcodeService.ResponseContent["status"].ToString(), Is.EqualTo("200"));
+            Assert.That(_singlePostcodeService.Json_Response["status"].ToString(), Is.EqualTo("200"));
         }
         [Test]
         public void StatusIs200_Alt()
         {
-            Assert.That(_singlePostcodeService.Statuscode, Is.EqualTo(200));
+            //Assert.That(_singlePostcodeService.Statuscode, Is.EqualTo(200));
+            Assert.That(_singlePostcodeService.CallManager.StatusCode, Is.EqualTo(200));
         }
         [Test]
         public void CorrectPostcodeIsReturned()
         {
-            Assert.That(_singlePostcodeService.ResponseContent["result"]["postcode"].ToString(),
+            //Assert.That(_singlePostcodeService.ResponseContent["result"]["postcode"].ToString(), Is.EqualTo("EC2Y 5AS"));
+
+            Assert.That(_singlePostcodeService.Json_Response["result"]["postcode"].ToString(),
                 Is.EqualTo("EC2Y 5AS"));
         }
 
         [Test]
         public void ObjectStatusIs200()
         {
-            //var 
+            Assert.That(_singlePostcodeService.SinglePostcodeDTO.Response.Status, Is.EqualTo(200));
+
+        }
+
+        [Test]
+        public void AdminDistrict_isCityOfLondon()
+        {
+            Assert.That(_singlePostcodeService.SinglePostcodeDTO.Response.result.admin_district, Is.EqualTo("City of London"));
         }
 
 

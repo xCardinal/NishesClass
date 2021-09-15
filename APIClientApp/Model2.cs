@@ -5,21 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace APIClientApp
+namespace APIClientApp.PostcodesIOService
 {
-    public class SingleOutcodeResponse
+    public class SingleOutcodeResponse : IResponse
     {
-        [JsonProperty("status")]
+        [JsonProperty("status")] 
         public int Status { get; set; }
         public OutCodeResult result { get; set; }
     }
-    public class BulkOutcodeResponse
+    public class BulkOutcodeResponse : IResponse
     {
         [JsonProperty("status")]
         public int status { get; set; }
         public SingleOutResult[] @result { get; set; }
     }
-    public class SingleOutResult
+    public class SingleOutResult : IResponse
     {
         public string query { get; set; }
 
