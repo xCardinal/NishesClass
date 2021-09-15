@@ -7,11 +7,24 @@ using System.Threading.Tasks;
 
 namespace APIClientApp
 {
-    public class OutcodeResponse
+    public class SingleOutcodeResponse
+    {
+        [JsonProperty("status")]
+        public int Status { get; set; }
+        public OutCodeResult result { get; set; }
+    }
+    public class BulkOutcodeResponse
     {
         [JsonProperty("status")]
         public int status { get; set; }
-        public OutCodeResult result { get; set; }
+        public SingleOutResult[] @result { get; set; }
+    }
+    public class SingleOutResult
+    {
+        public string query { get; set; }
+
+        [JsonProperty("result")]
+        public OutCodeResult outcode { get; set; }
     }
 
     public class OutCodeResult

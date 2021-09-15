@@ -137,10 +137,11 @@ namespace APIClientApp
             Console.WriteLine($"Status Code: {singlePostcodeResponse.StatusCode}");
             Console.WriteLine($"Status Code: {(int)singlePostcodeResponse.StatusCode}");
 
-            var jObject = JsonConvert.DeserializeObject<OutcodeResponse>(singlePostcodeResponse.Content);
+            var jObject = JsonConvert.DeserializeObject<SingleOutcodeResponse>(singlePostcodeResponse.Content);
 
-            Console.WriteLine("Country: " + jObject.result.country[0]);
-            Console.WriteLine("Country: " + jObject.result.admin_district[0]);
+            Console.WriteLine("Country: " + jObject.result.country[0].FirstOrDefault());
+            Console.WriteLine("Country: " + jObject.result.admin_district[0].FirstOrDefault());
+
         }
 
 
